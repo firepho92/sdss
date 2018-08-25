@@ -40,6 +40,17 @@ class Usuario{
     });
   }
 
+  async update(usuario){
+    var connection = await client.getConnection();
+    return new Promise((resolve, reject) => {
+      var db = connection.db(client.dbName);
+      db.collection('usuarios').updateOne({_id: usuario._id}, {$set: {usuario}}, (error, results) => {
+        if(error) throw error;
+        resolve(results);
+      });
+    });
+  }
+
   async readByID(id){
     var connection = await client.getConnection();
     return new Promise((resolve, reject) => {

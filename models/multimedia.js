@@ -14,7 +14,6 @@ class Multimedia{
       actualizado: null,
       nombre_archivo: nombre_archivo,
       status: 'A',
-      colaboradores: [],
       comentarios: []
     }
   }

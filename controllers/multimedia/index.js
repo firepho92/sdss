@@ -37,20 +37,40 @@ module.exports = function(router){
 
   router.put('/', function(req, res) {
     var response;
+    var usuario = new Usuario();
     var fileStorage = new FileStorage(req);
-    fileStorage.store()
-    .then(file_name => {
-      req.body.usuario.multimedia.map(file => {
-        if(file._id === req.body.updatingFileID)
-          file.nombre_archivo = file_name;
-      });
-      var usuario = new Usuario();
-      usuario.update(req.body.usuario)
-      .then(data => {
-        if(data)
-          res.send(response = {state: true, data: data});
-        res.send(response = {state: false, data: data});
-      });
+    var user = usuario.readByID(req.body.user_id).
+    then(user => {
+      if(req.files){
+        fileStorage.store()
+        .then(file_name => {
+          user.multimedia.map(file => {
+            if(file._id == req.body.file_id){
+              file.nombre_archivo = file_name;
+              file.nombre_multimedia = req.body.multimedia_name;
+              file.actualizado = new Date();
+            }
+          });
+          usuario.update(user)
+          .then(data => {
+            if(data)
+              res.send(response = {state: true, data: data});
+            res.send(response = {state: false, data: data});
+          });
+        });
+      }else{
+        user.multimedia.map(file => {
+          if(file._id == req.body.file_id){
+            file.nombre_multimedia = req.body.multimedia_name;
+          }
+        });
+        usuario.update(user)
+        .then(data => {
+          if(data)
+            res.send(response = {state: true, data: data});
+          res.send(response = {state: false, data: data});
+        });
+      }
     });
   });
 

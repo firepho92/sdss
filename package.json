@@ -1,7 +1,7 @@
 {
     "name": "sdss",
     "version": "0.1.0",
-    "description": "secure document storage system",
+    "description": "secure documents storage system",
     "author": "Alex Aguilar",
     "main": "index.js",
     "scripts": {

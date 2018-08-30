@@ -41,10 +41,32 @@ class Usuario{
   }
 
   async update(usuario){
+    console.log(usuario.multimedia);
     var connection = await client.getConnection();
     return new Promise((resolve, reject) => {
       var db = connection.db(client.dbName);
-      db.collection('usuarios').updateOne({_id: usuario._id}, {$set: {usuario}}, (error, results) => {
+      db.collection('usuarios').updateOne({_id: ObjectID(usuario._id)},
+        {
+          $set: {
+            nombre_usuario: usuario.nombre_usuario,
+            nombre: usuario.nombre,
+            password: usuario.password,
+            imagen_perfil: usuario.imagen_perfil,
+            multimedia: usuario.multimedia,
+            ultima_conexion: usuario.ultima_conexion
+          }
+        }, (error, results) => {
+        if(error) throw error;
+        resolve(results);
+      });
+    });
+  }
+
+  async updateComments(id, multimedia){
+    var connection = await client.getConnection();
+    return new Promise((resolve, reject) => {
+      var db = connection.db(client.dbName);
+      db.collection('usuarios').updateOne({_id: ObjectID(id)}, {$set: {multimedia: multimedia}}, (error, results) => {
         if(error) throw error;
         resolve(results);
       });
